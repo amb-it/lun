@@ -7,12 +7,24 @@ use Illuminate\Http\Request;
 
 class AdController extends Controller
 {
+    public function __construct()
+    {
+        \DB::listen(function ($query) {
+            dump([
+                $query->sql,
+                $query->bindings,
+                $query->time
+            ]);
+        });
+    }
     /**
      * @return \Illuminate\Http\Response
      */
-    public function getAds()
+    public function getAds(Request $request)
     {
-        return view('ads');
+        $ads = Ad::getAds();
+
+        return view('ads', compact('ads'));
     }
 
     /**

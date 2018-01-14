@@ -81,20 +81,21 @@
 
         <div class="panel panel-default">
             <div class="panel-body">
-                <div class="container-fluid">
-                    <div class="col-sm-2">10000</div>
-                    <div class="col-sm-1">3k</div>
-                    <div class="col-sm-1">20 m</div>
-                    <div class="col-sm-5">Lomonosova str. 14</div>
-                    <div class="col-sm-3"><a href="#">link.ua</a></div>
-
-                </div>
-                <div class="panel">
-                    <div class="panel-body">
-                        text
+                @foreach ($ads as $ad)
+                    <div class="container-fluid">
+                        <div class="col-sm-2">{{ $ad->price }} UAH</div>
+                        <div class="col-sm-1">{{ $ad->room_count }} rooms</div>
+                        <div class="col-sm-1">{{ $ad->area_total }} m2</div>
+                        <div class="col-sm-5">{{ $ad->street }} {{ $ad->house }}</div>
+                        <div class="col-sm-3"><a href="#">{{ $ad->url }}</a></div>
                     </div>
-                </div>
-                <hr>
+                    <div class="panel">
+                        <div class="panel-body">
+                            {{ $ad->text }}
+                        </div>
+                    </div>
+                    <hr>
+                @endforeach
             </div>
         </div>
 
