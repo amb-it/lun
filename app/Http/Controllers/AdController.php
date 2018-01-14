@@ -22,7 +22,7 @@ class AdController extends Controller
      */
     public function getAds(Request $request)
     {
-        $ads = Ad::getAds();
+        $ads = Ad::getAds($request);
 
         return view('ads', compact('ads'));
     }

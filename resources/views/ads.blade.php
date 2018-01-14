@@ -71,6 +71,8 @@
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5+</option>
                         </select>
                     </div>
                 </div>
@@ -83,11 +85,12 @@
             <div class="panel-body">
                 @foreach ($ads as $ad)
                     <div class="container-fluid">
-                        <div class="col-sm-2">{{ $ad->price }} UAH</div>
+                        <div class="col-sm-2">{{ $ad->price }} {{ $ad->nominative }}</div>
+                        <div class="col-sm-2">{{ $ad->price }} {{ $ad->nominative }}</div>
                         <div class="col-sm-1">{{ $ad->room_count }} rooms</div>
                         <div class="col-sm-1">{{ $ad->area_total }} m2</div>
                         <div class="col-sm-5">{{ $ad->street }} {{ $ad->house }}</div>
-                        <div class="col-sm-3"><a href="#">{{ $ad->url }}</a></div>
+                        <div class="col-sm-3"><a href="{{ $ad->url }}">{{ $ad->url }}</a></div>
                     </div>
                     <div class="panel">
                         <div class="panel-body">
@@ -102,23 +105,24 @@
         <div class="panel">
             <div class="panel-body">
                 <nav aria-label="Page navigation" class="text-center">
-                    <ul class="pagination">
-                        <li>
-                            <a href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li><a href="#">1</a></li>
-                        <li class="active"><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li>
-                            <a href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
+                    {{ $ads->links() }}
+                    {{--<ul class="pagination">--}}
+                        {{--<li>--}}
+                            {{--<a href="#" aria-label="Previous">--}}
+                                {{--<span aria-hidden="true">&laquo;</span>--}}
+                            {{--</a>--}}
+                        {{--</li>--}}
+                        {{--<li><a href="#">1</a></li>--}}
+                        {{--<li class="active"><a href="#">2</a></li>--}}
+                        {{--<li><a href="#">3</a></li>--}}
+                        {{--<li><a href="#">4</a></li>--}}
+                        {{--<li><a href="#">5</a></li>--}}
+                        {{--<li>--}}
+                            {{--<a href="#" aria-label="Next">--}}
+                                {{--<span aria-hidden="true">&raquo;</span>--}}
+                            {{--</a>--}}
+                        {{--</li>--}}
+                    {{--</ul>--}}
                 </nav>
             </div>
         </div>
