@@ -13,16 +13,18 @@ class Ad extends Model
 
         $ads = $ads->leftJoin('currencies', 'advertisements.currency_id', '=', 'currencies.currency_id');
 
-        if (isset($request->currency)) {
-            $ads = $ads->where('price', '>', $request->price_from);
+        if (isset($request->currency) && ($request->currency == 'usd')) {
+            $currency = 'usd';
+        } else {
+            $currency = 'uah';
         }
 
         if (isset($request->price_from)) {
-           $ads = $ads->where('price', '>', $request->price_from);
+           $ads = $ads->where('price_'.$currency, '>', $request->price_from);
         }
 
         if (isset($request->price_to)) {
-            $ads = $ads->where('price', '<', $request->price_to);
+            $ads = $ads->where('price_'.$currency, '<', $request->price_to);
         }
 
         if (isset($request->area_from)) {
@@ -36,16 +38,18 @@ class Ad extends Model
         if (isset($request->rooms)) {
             $rooms_array = explode(",", $request->rooms);
 
-            for ($i = 0; $i < count($rooms_array); $i++) {
-                if ($i == 0) {
-                    $ads = $ads->where('room_count', '=', $rooms_array[$i]);
-                } else {
-                    $ads = $ads->orWhere('room_count', '=', $rooms_array[$i]);
-                }
+            if (count($rooms_array) <= 1) {
+                $ads = $ads->where('room_count', '=', $rooms_array[0]);
+            } else {
+                $ads = $ads->where(function ($query) use ($rooms_array) {
+                    for ($i = 0; $i < count($rooms_array); $i++) {
+                        $query->orWhere('room_count', '=', $rooms_array[$i]);
+                    }
+                });
             }
         }
 
-        $ads = $ads->paginate(15);
+        $ads = $ads->paginate(5);
 
         $streets_ids = [];
 
