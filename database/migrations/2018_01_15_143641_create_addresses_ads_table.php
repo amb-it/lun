@@ -16,6 +16,7 @@ class CreateAddressesAdsTable extends Migration
         Schema::create('addresses_ads', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('street_id')->unsigned();
+            $table->string('title', 255);
             $table->string('house',12)->nullable();
             $table->integer('ads_number')->unsigned();
         });

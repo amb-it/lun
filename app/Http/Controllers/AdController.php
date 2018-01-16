@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Ad;
 use Illuminate\Http\Request;
 
 class AdController extends Controller
@@ -25,6 +24,17 @@ class AdController extends Controller
         $ads = Ad::getAds($request);
 
         return view('ads', compact('ads'));
+    }
+
+    public function getAutocompleteAddresses(Request $request) :\Illuminate\Support\Collection
+    {
+        if (empty($request->address)) {
+            return collect([]);
+        }
+
+        $suggestions = \App\AddressesAd::getSuggestions($request->address);
+
+        return $suggestions;
     }
 
     /**
