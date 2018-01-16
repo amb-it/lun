@@ -1,1 +1,2 @@
 0 3 * * * php /home/ambit/projects/lun/artisan prices:calculate
+0 4 * * * php /home/ambit/projects/lun/artisan ads:calculate-addresses-ads-numbers
