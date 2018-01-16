@@ -13,14 +13,14 @@ class CalculatePricesInCurrencies extends Command
      *
      * @var string
      */
-    protected $signature = 'prices:calculate';
+    protected $signature = 'ads:calculate-prices';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Calculates prices from advertisements table in currencies';
+    protected $description = 'Calculates prices from ads table in currencies';
 
     /**
      * Create a new command instance.
@@ -39,12 +39,12 @@ class CalculatePricesInCurrencies extends Command
      */
     public function handle()
     {
-        $currencies_coefficients = DB::table('currencies_coefficients')->get();
+        $currencies_rates = DB::table('currencies_rates')->get();
 
-        $usd_to_uah_coefficient = $currencies_coefficients[1]->coefficient;
-        $uah_to_usd_coefficient = $currencies_coefficients[2]->coefficient;
+        $usd_to_uah_coefficient = $currencies_rates[1]->rate;
+        $uah_to_usd_coefficient = $currencies_rates[2]->rate;
 
-        DB::table('advertisements')
+        DB::table('ads')
             ->where('currency_id', 1)
             ->update([
                 'price_uah' => DB::raw("`price`*".$usd_to_uah_coefficient),
@@ -52,7 +52,7 @@ class CalculatePricesInCurrencies extends Command
             ]);
 
 
-        DB::table('advertisements')
+        DB::table('ads')
             ->where('currency_id', 2)
             ->update([
                 'price_uah' => DB::raw("`price`"),

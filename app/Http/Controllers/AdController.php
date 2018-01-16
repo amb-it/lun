@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Ad;
 
 class AdController extends Controller
 {
@@ -16,10 +17,8 @@ class AdController extends Controller
             ]);
         });
     }
-    /**
-     * @return \Illuminate\Http\Response
-     */
-    public function getAds(Request $request)
+
+    public function getAds(Request $request) :\Illuminate\View\View
     {
         $ads = Ad::getAds($request);
 

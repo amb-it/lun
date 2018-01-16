@@ -22,7 +22,7 @@
             <div class="panel-body">
                 <div class="form-horizontal">
                     <div class="form-group">
-                        <label class="col-sm-1 control-label">Geo</label>
+                        <label class="col-sm-1 control-label">Search</label>
                         <div class="col-sm-8">
                             <input type="text" name="geo" list="geo" class="col-sm-12">
                             <datalist id="geo">
@@ -45,10 +45,10 @@
                         <input type="email" class="form-control" id="" placeholder="">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail2">currency</label>
+                        <label>currency</label>
                         <select class="form-control">
-                            <option>$</option>
                             <option>UAH</option>
+                            <option>$</option>
                         </select>
                     </div>
                 </div>
@@ -85,16 +85,15 @@
             <div class="panel-body">
                 @foreach ($ads as $ad)
                     <div class="container-fluid">
-                        <div class="col-sm-2">{{ $ad->price }} {{ $ad->nominative }}</div>
-                        <div class="col-sm-2">{{ $ad->price }} {{ $ad->nominative }}</div>
-                        <div class="col-sm-1">{{ $ad->room_count }} rooms</div>
-                        <div class="col-sm-1">{{ $ad->area_total }} m2</div>
+                        <div class="col-sm-2">{{ $ad->price }} {{ $ad->currency }}</div>
+                        <div class="col-sm-1">{{ $ad->rooms_number }} rooms</div>
+                        <div class="col-sm-1">{{ $ad->area }} m2</div>
                         <div class="col-sm-5">{{ $ad->street }} {{ $ad->house }}</div>
                         <div class="col-sm-3"><a href="{{ $ad->url }}">{{ $ad->url }}</a></div>
                     </div>
                     <div class="panel">
                         <div class="panel-body">
-                            {{ $ad->text }}
+                            {{ $ad->description }}
                         </div>
                     </div>
                     <hr>
