@@ -3,24 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use \Illuminate\Support\Collection;
+use Illuminate\Support\Collection;
 
 class AdController extends Controller
 {
     public function __construct()
     {
-//        \DB::listen(function ($query) {
-//            dump([
-//                $query->sql,
-//                $query->bindings,
-//                $query->time
-//            ]);
-//        });
+        \DB::listen(function ($query) {
+            dump([
+                $query->sql,
+                $query->bindings,
+                $query->time
+            ]);
+        });
     }
 
     public function getAds(Request $request) :\Illuminate\View\View
     {
         $ads = \App\Ad::getAds($request);
+
+        $ads->pages = \App\Custom\Paginator::getPages($ads->currentPage(), $ads->lastPage());
+        $ads->pages_links['pages'] = \App\Custom\UrlHandler::getPagesLinks($ads->pages);
+        $ads->pages_links['previous'] = \App\Custom\UrlHandler::getPreviousPageLink($ads->currentPage());
+        $ads->pages_links['next'] = \App\Custom\UrlHandler::getNextPageLink($ads->currentPage());
 
         return view('ads', compact('ads'));
     }

@@ -31,11 +31,6 @@
                             <label class="col-sm-1 control-label">Search</label>
                             <div class="col-sm-8">
                                 <input type="text" name="address" id="address" class="col-sm-12">
-                                {{--<input type="text" name="address" id="addresses" list="address" class="col-sm-12">--}}
-                                {{--<datalist id="address">--}}
-                                    {{--<option value="qwe">--}}
-                                    {{--<option value="2">--}}
-                                {{--</datalist>--}}
                             </div>
                         </div>
                     </div>
@@ -113,24 +108,34 @@
         <div class="panel">
             <div class="panel-body">
                 <nav aria-label="Page navigation" class="text-center">
-                    {{ $ads->links() }}
-                    {{--<ul class="pagination">--}}
-                        {{--<li>--}}
-                            {{--<a href="#" aria-label="Previous">--}}
-                                {{--<span aria-hidden="true">&laquo;</span>--}}
-                            {{--</a>--}}
-                        {{--</li>--}}
-                        {{--<li><a href="#">1</a></li>--}}
-                        {{--<li class="active"><a href="#">2</a></li>--}}
-                        {{--<li><a href="#">3</a></li>--}}
-                        {{--<li><a href="#">4</a></li>--}}
-                        {{--<li><a href="#">5</a></li>--}}
-                        {{--<li>--}}
-                            {{--<a href="#" aria-label="Next">--}}
-                                {{--<span aria-hidden="true">&raquo;</span>--}}
-                            {{--</a>--}}
-                        {{--</li>--}}
-                    {{--</ul>--}}
+
+                    @if ($ads->hasPages())
+                        <ul class="pagination">
+                            {{-- Previous Page Link --}}
+                            @if ($ads->onFirstPage())
+                                <li class="disabled"><span>&laquo;</span></li>
+                            @else
+                                <li><a href="{{ $ads->pages_links['previous'] }}">&laquo;</a></li>
+                            @endif
+
+                            {{-- Pagination Elements --}}
+                            @foreach ($ads->pages as $key => $page)
+                                @if ($page == $ads->currentPage())
+                                    <li class="active"><a href="{{ $ads->pages_links['pages'][$key] }}">{{ $page }}</a></li>
+                                @else
+                                    <li><a href="{{ $ads->pages_links['pages'][$key] }}">{{ $page }}</a></li>
+                                @endif
+                            @endforeach
+
+                             {{--Next Page Link--}}
+                            @if ($ads->hasMorePages())
+                                <li><a href="{{ $ads->pages_links['next'] }}">&raquo;</a></li>
+                            @else
+                                <li class="disabled"><span>&raquo;</span></li>
+                            @endif
+                        </ul>
+                    @endif
+
                 </nav>
             </div>
         </div>
@@ -140,10 +145,7 @@
 
 <!-- JavaScripts -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script>
-    <script
-            src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
-            integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
-            crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 <script src="/multiselect/bootstrap-multiselect.js"></script>
 
