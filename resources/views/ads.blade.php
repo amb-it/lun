@@ -11,6 +11,7 @@
 
     <!-- Styles -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/multiselect/bootstrap-multiselect.css">
 
     <link rel="stylesheet" type="text/css" href="{{ url('css/styles.css') }}">
@@ -20,64 +21,72 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-body">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-sm-1 control-label">Search</label>
-                        <div class="col-sm-8">
-                            <input type="text" name="geo" list="geo" class="col-sm-12">
-                            <datalist id="geo">
-                                <option value="1">
-                                <option value="2">
-                            </datalist>
+                <form action="/filter-ads" method="post">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="street_id" id="street_id">
+                    <input type="hidden" name="house" id="house">
+
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">Search</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="address" id="address" class="col-sm-12">
+                                {{--<input type="text" name="address" id="addresses" list="address" class="col-sm-12">--}}
+                                {{--<datalist id="address">--}}
+                                    {{--<option value="qwe">--}}
+                                    {{--<option value="2">--}}
+                                {{--</datalist>--}}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-1">
-                    PRICE
-                </div>
-                <div class="form-inline col-sm-11">
-                    <div class="form-group">
-                        <label>from</label>
-                        <input type="text" class="form-control" id="" placeholder="">
+                    <div class="col-sm-1">
+                        PRICE
                     </div>
-                    <div class="form-group">
-                        <label>to</label>
-                        <input type="email" class="form-control" id="" placeholder="">
+                    <div class="form-inline col-sm-11">
+                        <div class="form-group">
+                            <label>from</label>
+                            <input type="number" name="price_from" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>to</label>
+                            <input type="number" name="price_to" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>currency</label>
+                            <select name="currency" class="form-control">
+                                <option value=""></option>
+                                <option value="uah">UAH</option>
+                                <option value="usd">$</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>currency</label>
-                        <select class="form-control">
-                            <option>UAH</option>
-                            <option>$</option>
-                        </select>
+                    <hr>
+                    <div class="col-sm-1">
+                        AREA
                     </div>
-                </div>
-                <hr>
-                <div class="col-sm-1">
-                    AREA
-                </div>
-                <div class="form-inline col-sm-11">
-                    <div class="form-group">
-                        <label>from</label>
-                        <input type="text" class="form-control" id="" placeholder="">
+                    <div class="form-inline col-sm-11">
+                        <div class="form-group">
+                            <label>from</label>
+                            <input type="number" name="area_from" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>to</label>
+                            <input type="number" name="area_to" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>rooms</label>
+                            <select name="rooms[]" id="multiselect" multiple size="1" class="form-control">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5+</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>to</label>
-                        <input type="text" class="form-control" id="" placeholder="">
-                    </div>
-                    <div class="form-group">
-                        <label>rooms</label>
-                        <select id="multiselect" multiple="multiple" class="form-control">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5+</option>
-                        </select>
-                    </div>
-                </div>
-                <a href="#" class="btn btn-success btn-lg pull-right">find</a>
+                    <input type="submit" value="Find" class="btn btn-success btn-lg pull-right"></input>
 
+                </form>
             </div>
         </div>
 
@@ -89,7 +98,7 @@
                         <div class="col-sm-1">{{ $ad->rooms_number }} rooms</div>
                         <div class="col-sm-1">{{ $ad->area }} m2</div>
                         <div class="col-sm-5">{{ $ad->street }} {{ $ad->house }}</div>
-                        <div class="col-sm-3"><a href="{{ $ad->url }}">{{ $ad->url }}</a></div>
+                        <div class="col-sm-3"><a href="{{ $ad->url }}" target="_link">{{ $ad->url }}</a></div>
                     </div>
                     <div class="panel">
                         <div class="panel-body">
@@ -131,7 +140,10 @@
 
 <!-- JavaScripts -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script>
-{{--<script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>--}}
+    <script
+            src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+            integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+            crossorigin="anonymous"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 <script src="/multiselect/bootstrap-multiselect.js"></script>
 

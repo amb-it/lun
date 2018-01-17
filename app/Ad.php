@@ -85,7 +85,7 @@ class Ad extends Model
                 $sql->where('house', '=', $request->house);
             }
         } elseif ($request->address) {
-            $sql->where('text', 'like', '%'.$request->address.'%');
+            $sql->where('description', 'like', '%'.$request->address.'%');
         }
     }
 }

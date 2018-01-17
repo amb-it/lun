@@ -12,3 +12,7 @@
 */
 
 Route::get('/', 'AdController@getAds');
+
+Route::get('/autocomplete-address', 'AdController@getAutocompleteAddresses');
+
+Route::post('/filter-ads', 'AdController@filterAds');

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AddressesAd extends Model
 {
-    public static function getSuggestions(string $address) :\Illuminate\Support\Collection
+    public static function getAutocompleteAddresses(string $address) :\Illuminate\Support\Collection
     {
         $address = trim($address);
 
@@ -20,11 +20,11 @@ class AddressesAd extends Model
             $sql->where('house', $house);
         }
 
-        $suggestions = $sql->orderBy('ads_number', 'desc')
+        $addresses = $sql->orderBy('ads_number', 'desc')
             ->limit(10)
             ->get();
 
-        return $suggestions;
+        return $addresses;
     }
 
     protected static function getStreetFromRequest(string $address) :string
@@ -35,7 +35,7 @@ class AddressesAd extends Model
             unset($array[key($array)]);
         }
 
-        return implode($array);
+        return implode(" ", $array);
     }
 
     protected static function getHouseFromRequest(string $address) : string
