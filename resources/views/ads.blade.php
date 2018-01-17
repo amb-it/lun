@@ -14,11 +14,18 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/multiselect/bootstrap-multiselect.css">
 
-    <link rel="stylesheet" type="text/css" href="{{ url('css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="/css/app.css">
 </head>
 
 <body>
     <div class="container">
+        <div>
+            <div class="panel-body">
+                <button class="btn btn-warning pull-right" id="statistics">show/hide statistics</button>
+                <h1>LUN</h1>
+            </div>
+        </div>
+
         <div class="panel panel-default">
             <div class="panel-body">
                 <form action="/filter-ads" method="post">
@@ -30,7 +37,7 @@
                         <div class="form-group">
                             <label class="col-sm-1 control-label">Search</label>
                             <div class="col-sm-8">
-                                <input type="text" name="address" id="address" class="col-sm-12">
+                                <input type="text" name="address" id="address" class="col-sm-12" value="{{ isset($filters['address']) ? $filters['address'] : '' }}">
                             </div>
                         </div>
                     </div>
@@ -40,16 +47,15 @@
                     <div class="form-inline col-sm-11">
                         <div class="form-group">
                             <label>from</label>
-                            <input type="number" name="price_from" class="form-control">
+                            <input type="number" name="price_from" class="form-control" value="{{ isset($filters['price_from']) ? $filters['price_from'] : '' }}">
                         </div>
                         <div class="form-group">
                             <label>to</label>
-                            <input type="number" name="price_to" class="form-control">
+                            <input type="number" name="price_to" class="form-control" value="{{ isset($filters['price_to']) ? $filters['price_to'] : '' }}">
                         </div>
                         <div class="form-group">
                             <label>currency</label>
                             <select name="currency" class="form-control">
-                                <option value=""></option>
                                 <option value="uah">UAH</option>
                                 <option value="usd">$</option>
                             </select>
@@ -62,11 +68,11 @@
                     <div class="form-inline col-sm-11">
                         <div class="form-group">
                             <label>from</label>
-                            <input type="number" name="area_from" class="form-control">
+                            <input type="number" name="area_from" class="form-control" value="{{ isset($filters['area_from']) ? $filters['area_from'] : '' }}">
                         </div>
                         <div class="form-group">
                             <label>to</label>
-                            <input type="number" name="area_to" class="form-control">
+                            <input type="number" name="area_to" class="form-control" value="{{ isset($filters['area_to']) ? $filters['area_to'] : '' }}">
                         </div>
                         <div class="form-group">
                             <label>rooms</label>
@@ -85,6 +91,12 @@
             </div>
         </div>
 
+        <div>
+            <div class="panel-body text-center">
+                Found - <b>{{ $ads->total() }}</b> ads
+            </div>
+        </div>
+
         <div class="panel panel-default">
             <div class="panel-body">
                 @foreach ($ads as $ad)
@@ -100,6 +112,7 @@
                             {{ $ad->description }}
                         </div>
                     </div>
+                    <hr>
                     <hr>
                 @endforeach
             </div>

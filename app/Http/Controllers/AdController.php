@@ -7,27 +7,28 @@ use Illuminate\Support\Collection;
 
 class AdController extends Controller
 {
-    public function __construct()
-    {
-        \DB::listen(function ($query) {
-            dump([
-                $query->sql,
-                $query->bindings,
-                $query->time
-            ]);
-        });
-    }
-
     public function getAds(Request $request) :\Illuminate\View\View
     {
-        $ads = \App\Ad::getAds($request);
+        $filters = $this->getFilters($request);
+
+        $request->curency ? $currency = 'uah' : $currency = 'usd';
+
+        $ads = \App\Ad::getAds($filters, $currency);
 
         $ads->pages = \App\Custom\Paginator::getPages($ads->currentPage(), $ads->lastPage());
         $ads->pages_links['pages'] = \App\Custom\UrlHandler::getPagesLinks($ads->pages);
         $ads->pages_links['previous'] = \App\Custom\UrlHandler::getPreviousPageLink($ads->currentPage());
         $ads->pages_links['next'] = \App\Custom\UrlHandler::getNextPageLink($ads->currentPage());
 
-        return view('ads', compact('ads'));
+        if (isset($filters['street_id'])) {
+            $filters['address'] = \App\Street::find($filters['street_id'])->title;
+
+            if (isset($filters['house'])) {
+                $filters['address'] .= ' ' . $filters['house'];
+            }
+        }
+
+        return view('ads', compact('ads', 'filters'));
     }
 
     public function getAutocompleteAddresses(Request $request) :array

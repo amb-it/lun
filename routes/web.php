@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'AdController@getAds');
+Route::get('/', 'AdController@getAds')->middleware('statistics');
 
 Route::get('/autocomplete-address', 'AdController@getAutocompleteAddresses');
 

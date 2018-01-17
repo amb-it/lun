@@ -4,12 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
-use Illuminate\Http\Request;
 use DB;
 
 class Ad extends Model
 {
-    public static function getAds(Request $request) :\Illuminate\Pagination\LengthAwarePaginator
+    public static function getAds(array $filters, $currency) :\Illuminate\Pagination\LengthAwarePaginator
     {
         $sql = DB::table('ads')
             ->select(
@@ -21,48 +20,42 @@ class Ad extends Model
         $sql->leftJoin('currencies', 'ads.currency_id', '=', 'currencies.id');
         $sql->leftJoin('streets', 'ads.street_id', '=', 'streets.id');
 
-        self::addPriceFilter($sql, $request);
-        self::addAreaFilter($sql, $request);
-        self::addRoomsFilter($sql, $request);
-        self::addAddressFilter($sql, $request);
+        self::addPriceFilter($sql, $filters, $currency);
+        self::addAreaFilter($sql, $filters);
+        self::addRoomsFilter($sql, $filters);
+        self::addAddressFilter($sql, $filters);
 
         $ads = $sql->paginate(5);
 
         return $ads;
     }
 
-    protected static function addPriceFilter(Builder $sql, Request $request)
+    protected static function addPriceFilter(Builder $sql, array $filters, string $currency)
     {
-        if ($request->currency && ($request->currency == 'usd')) {
-            $currency = 'usd';
-        } else {
-            $currency = 'uah';
+        if (isset($filters['price_from'])) {
+            $sql->where('price_'.$currency, '>', $filters['price_from']);
         }
 
-        if ($request->price_from) {
-            $sql->where('price_'.$currency, '>', $request->price_from);
-        }
-
-        if ($request->price_to) {
-            $sql->where('price_'.$currency, '<', $request->price_to);
+        if (isset($filters['price_to'])) {
+            $sql->where('price_'.$currency, '<', $filters['price_to']);
         }
     }
 
-    protected static function addAreaFilter(Builder $sql, Request $request)
+    protected static function addAreaFilter(Builder $sql, array $filters)
     {
-        if ($request->area_from) {
-            $sql->where('area', '>', $request->area_from);
+        if (isset($filters['area_from'])) {
+            $sql->where('area', '>', $filters['area_from']);
         }
 
-        if ($request->area_to) {
-            $sql->where('area', '<', $request->area_to);
+        if (isset($filters['area_to'])) {
+            $sql->where('area', '<', $filters['area_to']);
         }
     }
 
-    protected static function addRoomsFilter(Builder $sql, Request $request)
+    protected static function addRoomsFilter(Builder $sql, array $filters)
     {
-        if ($request->rooms) {
-            $rooms_array = explode(",", $request->rooms);
+        if (isset($filters['rooms'])) {
+            $rooms_array = explode(",", $filters['rooms']);
 
             if (count($rooms_array) <= 1) {
                 $sql->where('rooms_number', '=', $rooms_array[0]);
@@ -76,16 +69,16 @@ class Ad extends Model
         }
     }
 
-    protected static function addAddressFilter(Builder $sql, Request $request)
+    protected static function addAddressFilter(Builder $sql, array $filters)
     {
-        if ($request->street_id) {
-            $sql->where('street_id', '=', $request->street_id);
+        if (isset($filters['street_id'])) {
+            $sql->where('street_id', '=', $filters['street_id']);
 
-            if ($request->house) {
-                $sql->where('house', '=', $request->house);
+            if (isset($filters['house'])) {
+                $sql->where('house', '=', $filters['house']);
             }
-        } elseif ($request->address) {
-            $sql->where('description', 'like', '%'.$request->address.'%');
+        } elseif (isset($filters['address'])) {
+            $sql->where('description', 'like', '%'.$filters['address'].'%');
         }
     }
 }

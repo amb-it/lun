@@ -9,4 +9,13 @@ $( document ).ready( function() {
             $( '#house' ).val(ui.item.house);
         }
     });
+
+    $( "#statistics" ).on('click', function () {
+        if (document.cookie.indexOf('statistics') !== -1) {
+            document.cookie = "statistics=true; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+        } else {
+            document.cookie = "statistics=true;";
+        }
+        location.reload();
+    });
 });
