@@ -8,6 +8,13 @@ use DB;
 
 class Ad extends Model
 {
+    /**
+     * Get paginated filtered ads
+     *
+     * @param array $filters
+     * @param $currency
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
     public static function getAds(array $filters, $currency) :\Illuminate\Pagination\LengthAwarePaginator
     {
         $sql = DB::table('ads')
@@ -30,6 +37,11 @@ class Ad extends Model
         return $ads;
     }
 
+    /**
+     * @param Builder $sql
+     * @param array $filters
+     * @param string $currency
+     */
     protected static function addPriceFilter(Builder $sql, array $filters, string $currency)
     {
         if (isset($filters['price_from'])) {
@@ -41,6 +53,10 @@ class Ad extends Model
         }
     }
 
+    /**
+     * @param Builder $sql
+     * @param array $filters
+     */
     protected static function addAreaFilter(Builder $sql, array $filters)
     {
         if (isset($filters['area_from'])) {
@@ -52,6 +68,10 @@ class Ad extends Model
         }
     }
 
+    /**
+     * @param Builder $sql
+     * @param array $filters
+     */
     protected static function addRoomsFilter(Builder $sql, array $filters)
     {
         if (isset($filters['rooms'])) {
@@ -69,6 +89,10 @@ class Ad extends Model
         }
     }
 
+    /**
+     * @param Builder $sql
+     * @param array $filters
+     */
     protected static function addAddressFilter(Builder $sql, array $filters)
     {
         if (isset($filters['street_id'])) {

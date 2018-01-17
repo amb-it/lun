@@ -6,6 +6,13 @@ use Closure;
 
 class StatisticsMiddleware
 {
+    /**
+     * Show sql queries and all script execution time
+     *
+     * @param $request
+     * @param Closure $next
+     * @return mixed
+     */
     public function handle($request, Closure $next)
     {
         if (isset($_COOKIE['statistics'])) {

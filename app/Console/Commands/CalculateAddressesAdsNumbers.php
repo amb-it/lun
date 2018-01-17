@@ -33,6 +33,7 @@ class CalculateAddressesAdsNumbers extends Command
 
     /**
      * Execute the console command.
+     * Gets ads, groups them by street and address, count number of ads per address and store it in a table addresses_ads
      *
      * @return mixed
      */

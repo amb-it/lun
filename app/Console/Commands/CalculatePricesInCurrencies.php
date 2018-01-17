@@ -34,6 +34,7 @@ class CalculatePricesInCurrencies extends Command
 
     /**
      * Execute the console command.
+     * Calculate prices in uah and usd and store it in a ads table
      *
      * @return mixed
      */
